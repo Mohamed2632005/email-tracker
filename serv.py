@@ -40,7 +40,8 @@ app = Flask(__name__)
 
 @app.route("/pixel.gif")
 def pixel():
-    ip         = request.remote_addr
+    forwarded  = request.headers.get("X-Forwarded-For", "")
+    ip         = forwarded.split(",")[0].strip() if forwarded else request.remote_addr
     user_agent = request.headers.get("User-Agent", "inconnu")
     campaign   = request.args.get("id", "inconnu")
     now        = datetime.datetime.now()
