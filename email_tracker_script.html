@@ -1,0 +1,79 @@
+
+<div style="font-family: var(--font-mono); font-size: 13px; line-height: 1.6;">
+
+<div style="margin-bottom: 1.5rem;">
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <span style="background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:2px 10px; font-size:12px; color:var(--color-text-secondary); font-family:var(--font-sans);">send_email.py</span>
+  </div>
+  <pre style="background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1.25rem; overflow-x:auto; margin:0; color:var(--color-text-primary);">
+<span style="color:var(--color-text-secondary)"># pip install secure-smtplib</span>
+<span style="color:var(--color-text-info)">import</span> smtplib
+<span style="color:var(--color-text-info)">from</span> email.mime.multipart <span style="color:var(--color-text-info)">import</span> MIMEMultipart
+<span style="color:var(--color-text-info)">from</span> email.mime.text <span style="color:var(--color-text-info)">import</span> MIMEText
+
+<span style="color:var(--color-text-secondary)"># ─── CONFIG ───────────────────────────────────────</span>
+GMAIL_ADDRESS  = <span style="color:var(--color-text-warning)">"ton@gmail.com"</span>
+GMAIL_PASSWORD = <span style="color:var(--color-text-warning)">"xxxx xxxx xxxx xxxx"</span>  <span style="color:var(--color-text-secondary)"># mot de passe d'application Google</span>
+
+DESTINATAIRE   = <span style="color:var(--color-text-warning)">"destinataire@example.com"</span>
+SUJET          = <span style="color:var(--color-text-warning)">"Ma newsletter"</span>
+TRACKING_URL   = <span style="color:var(--color-text-warning)">"https://ton-serveur.com/pixel.gif?id=campagne123"</span>
+<span style="color:var(--color-text-secondary)"># ──────────────────────────────────────────────────</span>
+
+<span style="color:var(--color-text-secondary)"># Corps de l'email (modifie ici)</span>
+html_content = <span style="color:var(--color-text-warning)">f"""
+&lt;html&gt;
+&lt;body style="font-family: Arial, sans-serif;"&gt;
+
+  &lt;h2&gt;Bonjour !&lt;/h2&gt;
+  &lt;p&gt;Voici le contenu de mon email...&lt;/p&gt;
+  &lt;p&gt;Cordialement,&lt;br&gt;Mon Nom&lt;/p&gt;
+
+  &lt;!-- Tracking pixel (invisible) --&gt;
+  &lt;img src="{TRACKING_URL}"
+       width="1" height="1"
+       style="display:none; border:0;"
+       alt="" /&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"""</span>
+
+<span style="color:var(--color-text-secondary)"># Construction du mail</span>
+msg = MIMEMultipart(<span style="color:var(--color-text-warning)">"alternative"</span>)
+msg[<span style="color:var(--color-text-warning)">"Subject"</span>] = SUJET
+msg[<span style="color:var(--color-text-warning)">"From"</span>]    = GMAIL_ADDRESS
+msg[<span style="color:var(--color-text-warning)">"To"</span>]      = DESTINATAIRE
+
+msg.attach(MIMEText(html_content, <span style="color:var(--color-text-warning)">"html"</span>))
+
+<span style="color:var(--color-text-secondary)"># Envoi via Gmail SMTP</span>
+<span style="color:var(--color-text-info)">try</span>:
+    <span style="color:var(--color-text-info)">with</span> smtplib.SMTP(<span style="color:var(--color-text-warning)">"smtp.gmail.com"</span>, <span style="color:var(--color-text-warning)">587</span>) <span style="color:var(--color-text-info)">as</span> server:
+        server.starttls()
+        server.login(GMAIL_ADDRESS, GMAIL_PASSWORD)
+        server.sendmail(GMAIL_ADDRESS, DESTINATAIRE, msg.as_string())
+    <span style="color:var(--color-text-info)">print</span>(<span style="color:var(--color-text-warning)">"✓ Email envoyé avec succès !"</span>)
+<span style="color:var(--color-text-info)">except</span> Exception <span style="color:var(--color-text-info)">as</span> e:
+    <span style="color:var(--color-text-info)">print</span>(<span style="color:var(--color-text-warning)">f"✗ Erreur : {e}"</span>)
+</pre>
+</div>
+
+<div style="font-family:var(--font-sans); font-size:13px; color:var(--color-text-secondary);">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:0.5rem;">
+    <div style="background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:0.75rem 1rem;">
+      <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:4px;">① Installe Python</div>
+      <code style="font-size:12px; color:var(--color-text-info);">python.org</code> puis vérifie avec <code style="font-size:12px;">python --version</code>
+    </div>
+    <div style="background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:0.75rem 1rem;">
+      <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:4px;">② Mot de passe Google</div>
+      Compte Google → Sécurité → <strong>Mots de passe d'application</strong>
+    </div>
+    <div style="background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:0.75rem 1rem;">
+      <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:4px;">③ Lance le script</div>
+      <code style="font-size:12px; color:var(--color-text-info);">python send_email.py</code>
+    </div>
+  </div>
+</div>
+
+</div>

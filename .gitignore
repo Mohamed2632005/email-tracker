@@ -1,0 +1,15 @@
+# Credentials — NE JAMAIS COMMITER
+.env
+valeures.env
+
+# Logs générés automatiquement
+tracking_log.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environnements virtuels
+venv/
+.venv/
