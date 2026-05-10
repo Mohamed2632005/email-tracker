@@ -1,3 +1,4 @@
+import base64
 import os
 import smtplib
 import uuid
@@ -52,56 +53,38 @@ def send_tracked_email(destinataire: str, sujet: str, contenu_html: str, campaig
 
 
 if __name__ == "__main__":
-    contenu = """
+    logo_path = os.environ.get("NYX_LOGO_PATH", "nyx_logo.png")
+    with open(logo_path, "rb") as f:
+        logo_b64 = base64.b64encode(f.read()).decode()
+
+    contenu = f"""
     <html>
-    <body style="font-family: Arial, sans-serif; color: #1a1a1a; max-width: 620px; margin: auto; padding: 20px;">
+    <body style="font-family: Arial, sans-serif; color: #1a1a1a; max-width: 620px; margin: auto; padding: 0;">
 
-      <p>Salut Angelina ! 👋</p>
+      <div style="background:#000; text-align:center; padding: 20px 0;">
+        <img src="data:image/png;base64,{logo_b64}" width="300" alt="NYX Professional Makeup" style="display:block; margin:auto;" />
+      </div>
 
-      <p>Je suis Camille, Influence Marketing Manager chez NYX Professional Makeup France. Je te contacte directement parce qu'on a un projet qui, j'en suis convaincue, pourrait vraiment te parler.</p>
+      <div style="padding: 30px 20px;">
 
-      <p>On suit ton TikTok depuis un moment et franchement — 867K abonnés, 56 millions de likes, et tout ça construit en moins d'un an — c'est juste impressionnant. Mais ce qui nous a vraiment convaincues de t'écrire, c'est la façon dont tu parles de maquillage. T'as ce truc rare : tu testes, tu donnes ton vrai avis, et ta communauté te fait confiance pour ça. Et c'est exactement ce qu'on cherche.</p>
+        <p>Salut Angelina ! 👋</p>
 
-      <p><strong>Côté projet, voilà pourquoi on te contacte :</strong></p>
+        <p>Je suis Camille, Influence Marketing Manager chez NYX Professional Makeup France.</p>
 
-      <p>On a 3 produits qu'on veut vraiment pousser cet été et pour lesquels on cherche des créatrices capables de les tester honnêtement devant leur audience :</p>
+        <p>On suit ton TikTok depuis un moment et on aimerait te proposer une collab rémunérée cet été autour de quelques-uns de nos produits phares. L'idée : tu les testes à ta façon, on ne touche pas à ton contenu.</p>
 
-      <ul>
-        <li>💧 <strong>Le Fat Oil Lip Drip</strong> — notre huile à lèvres star, ultra brillante et hydratante, qui fait actuellement un carton aux US</li>
-        <li>🖊️ <strong>L'Epic Ink Waterproof Liquid Eyeliner</strong> — précis, longue tenue 24h, le genre de produit parfait à tester en GRWM</li>
-        <li>🌟 <strong>Le Buttermelt Bronzer</strong> — notre bronzer crémeux effet bonne mine qui buzze en ce moment sur les réseaux</li>
-      </ul>
+        <p>Si ça t'intéresse, tous les détails sont ici : <a href="{{{{click_url}}}}">voir la proposition complète</a></p>
 
-      <p>L'idée serait simple : on t'envoie les 3, tu les testes sur TikTok à ta façon (GRWM, tutoriel, avis honnête — t'es libre), et tu dis ce que t'en penses vraiment à ta commu. Pas de script, pas de discours marketing — juste toi et les produits.</p>
+        <p>Hâte d'avoir ton retour 🙂</p>
 
-      <p><strong>Ce qu'on propose concrètement :</strong></p>
+        <p>
+          <strong>Camille Rousseau</strong><br>
+          Influence Marketing Manager – NYX Professional Makeup France<br>
+          <a href="mailto:camille.rousseau@nyxcosmetics.fr">camille.rousseau@nyxcosmetics.fr</a><br>
+          +33 6 12 48 73 91
+        </p>
 
-      <ul>
-        <li>✅ Un colis de produits offerts en avant-première (~150€ de valeur)</li>
-        <li>✅ 1 à 2 TikToks sponsorisés — 900€ par contenu validé</li>
-        <li>✅ Un code promo exclusif pour ta communauté + 10% de commission sur chaque vente générée</li>
-        <li>✅ Liberté créative totale, on ne touche pas à ton contenu</li>
-      </ul>
-
-      <p>Si ça te tente, on peut s'appeler 15-20 min cette semaine pour en parler tranquillement — ou si tu préfères tout par mail, aucun souci non plus !</p>
-
-      <p style="text-align:center; margin: 30px 0;">
-        <a href="{{click_url}}"
-           style="background:#000; color:#fff; padding:14px 32px; text-decoration:none;
-                  border-radius:4px; font-weight:bold; font-size:15px; display:inline-block;">
-          Je suis intéressée →
-        </a>
-      </p>
-
-      <p>Hâte d'avoir ton retour 🙂</p>
-
-      <p>
-        <strong>Camille Rousseau</strong><br>
-        Influence Marketing Manager – NYX Professional Makeup France<br>
-        <a href="mailto:camille.rousseau@nyxcosmetics.fr">camille.rousseau@nyxcosmetics.fr</a><br>
-        +33 6 12 48 73 91<br>
-        <a href="https://nyxcosmetics.fr">nyxcosmetics.fr</a> | @nyxcosmetics_fr
-      </p>
+      </div>
 
     </body>
     </html>
