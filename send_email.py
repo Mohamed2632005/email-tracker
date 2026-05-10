@@ -53,7 +53,7 @@ def send_tracked_email(destinataire: str, sujet: str, contenu_html: str, campaig
 
 
 if __name__ == "__main__":
-    logo_path = os.environ.get("NYX_LOGO_PATH", "nyx_logo.png")
+    logo_path = os.environ.get("NYX_LOGO_PATH", "img/Capture d'écran 2026-05-10 142715.png")
     with open(logo_path, "rb") as f:
         logo_b64 = base64.b64encode(f.read()).decode()
 
