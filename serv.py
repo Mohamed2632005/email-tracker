@@ -51,6 +51,7 @@ def pixel():
         csv.writer(f).writerow([now.isoformat(), campaign, ip, user_agent])
 
     logger.info(f"campagne={campaign} | IP={ip}")
+    logger.info(f"HEADERS: { {k: v for k, v in request.headers} }")
 
     # Cache désactivé pour forcer le rechargement à chaque ouverture
     response = send_file(io.BytesIO(GIF_PIXEL), mimetype="image/gif")
