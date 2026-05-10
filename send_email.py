@@ -1,4 +1,3 @@
-import base64
 import os
 import smtplib
 import uuid
@@ -53,37 +52,44 @@ def send_tracked_email(destinataire: str, sujet: str, contenu_html: str, campaig
 
 
 if __name__ == "__main__":
-    logo_path = os.environ.get("NYX_LOGO_PATH", "img/Capture d'écran 2026-05-10 142715.png")
-    with open(logo_path, "rb") as f:
-        logo_b64 = base64.b64encode(f.read()).decode()
-
-    contenu = f"""
+    contenu = """
     <html>
     <body style="font-family: Arial, sans-serif; color: #1a1a1a; max-width: 620px; margin: auto; padding: 0;">
 
-      <div style="background:#000; text-align:center; padding: 20px 0;">
-        <img src="data:image/png;base64,{logo_b64}" width="300" alt="NYX Professional Makeup" style="display:block; margin:auto;" />
+      <div style="background:#c8a96e; text-align:center; padding: 18px 0;">
+        <span style="font-size:22px; font-weight:bold; color:#fff; letter-spacing:2px;">ÉCLAT STUDIO</span>
+        <div style="font-size:11px; color:#fff; letter-spacing:1px; margin-top:4px;">Influence &amp; Brand Partnerships</div>
       </div>
 
-      <div style="padding: 30px 20px;">
+      <div style="padding: 32px 28px;">
 
-        <p>Salut Angelina ! 👋</p>
+        <p>Bonjour,</p>
 
-        <p>Je suis Camille, Influence Marketing Manager chez NYX Professional Makeup France.</p>
+        <p>Je suis Sophie Marchand, responsable partenariats chez <strong>Éclat Studio</strong>, une agence spécialisée dans les collaborations entre créateurs de contenu et marques beauté/lifestyle.</p>
 
-        <p>On suit ton TikTok depuis un moment et on aimerait te proposer une collab rémunérée cet été autour de quelques-uns de nos produits phares. L'idée : tu les testes à ta façon, on ne touche pas à ton contenu.</p>
+        <p>Nous suivons votre travail depuis plusieurs mois et nous aimerions vous proposer une collaboration rémunérée cet été. Le concept est simple : liberté créative totale, vous testez les produits à votre façon.</p>
 
-        <p>Si ça t'intéresse, tous les détails sont ici : <a href="{{{{click_url}}}}">voir la proposition complète</a></p>
+        <p>Tous les détails de la proposition sont disponibles ici :<br>
+        <a href="{{click_url}}" style="color:#c8a96e; font-weight:bold;">voir la proposition complète</a></p>
 
-        <p>Hâte d'avoir ton retour 🙂</p>
+        <p>Vous pouvez également consulter notre site pour en savoir plus sur notre agence :<br>
+        <a href="{{click_url}}" style="color:#c8a96e;">www.eclat-studio.fr</a></p>
+
+        <p>N'hésitez pas à me répondre directement si vous avez des questions.</p>
+
+        <p>Cordialement,</p>
 
         <p>
-          <strong>Camille Rousseau</strong><br>
-          Influence Marketing Manager – NYX Professional Makeup France<br>
-          <a href="mailto:camille.rousseau@nyxcosmetics.fr">camille.rousseau@nyxcosmetics.fr</a><br>
-          +33 6 12 48 73 91
+          <strong>Sophie Marchand</strong><br>
+          Responsable Partenariats — Éclat Studio<br>
+          <a href="mailto:s.marchand@eclat-studio.fr" style="color:#c8a96e;">s.marchand@eclat-studio.fr</a><br>
+          +33 6 27 84 13 50
         </p>
 
+      </div>
+
+      <div style="background:#f5f5f5; text-align:center; padding:12px; font-size:11px; color:#999;">
+        Éclat Studio — 14 rue des Acacias, 75017 Paris
       </div>
 
     </body>
@@ -92,7 +98,7 @@ if __name__ == "__main__":
 
     send_tracked_email(
         destinataire="mohamed.toubi263@gmail.com",
-        sujet="Collab NYX x toi — on a un projet pour cet été 🎀",
+        sujet="Proposition de partenariat — Éclat Studio",
         contenu_html=contenu,
         campaign_id="campagne-mai-2026"
     )
