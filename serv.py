@@ -3,14 +3,15 @@ import os
 import csv
 import logging
 import datetime
-from flask import Flask, request, send_file, Response
+from flask import Flask, request, send_file, Response, redirect
 from dotenv import load_dotenv
 
 load_dotenv("valeures.env")
 
 # --- Configuration ---
-PORT     = int(os.environ.get("PORT", 5000))
-LOG_FILE = os.environ.get("LOG_FILE", "tracking_log.csv")
+PORT         = int(os.environ.get("PORT", 5000))
+LOG_FILE     = os.environ.get("LOG_FILE", "tracking_log.csv")
+REDIRECT_URL = os.environ.get("REDIRECT_URL", "https://nyxcosmetics.fr")
 
 # --- Logging console ---
 logging.basicConfig(
@@ -59,33 +60,6 @@ def pixel():
     return response
 
 
-_ERROR_PAGE = """<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erreur</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f4f4f4;
-           display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .card { background: #fff; padding: 40px 50px; border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,.1); text-align: center; max-width: 420px; width: 90%; }
-    .icon { font-size: 48px; margin-bottom: 16px; }
-    h1 { font-size: 1.3em; color: #c0392b; margin-bottom: 10px; }
-    p  { color: #555; line-height: 1.6; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <div class="icon">⚠️</div>
-    <h1>Une erreur est survenue</h1>
-    <p>Le lien est temporairement indisponible.<br>Veuillez réessayer plus tard.</p>
-  </div>
-</body>
-</html>"""
-
-
 @app.route("/click")
 def click():
     forwarded  = request.headers.get("X-Forwarded-For", "")
@@ -99,7 +73,7 @@ def click():
 
     logger.info(f"CLICK campagne={campaign} | IP={ip}")
 
-    return Response(_ERROR_PAGE, status=200, mimetype="text/html")
+    return redirect(REDIRECT_URL, code=302)
 
 
 if __name__ == "__main__":
